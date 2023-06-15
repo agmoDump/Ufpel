@@ -1,0 +1,195 @@
+Semantica formal
+
+- estuda os fundamentos que são usados para explicar o comportamento das 
+linguagens de programação
+
+Tipos de semantica:
+
+-> semantica operacional: se preocupa com o EFEITO da execução dos programas
+Ex.: Na linguagem imperativa: mudança na memória
+- Semantica operacional define um interpretador
+
+-> semantica axiomatica:
+- não se preocupa com o efeito de todas as construções
+(provar propriedades a respeito da execução dos programas)
+Ex.: provar matematicamente que dada uma entrada válida, 
+meu programa sempre vai computar o fatorial.
+
+-> semantica diferencial:
+- dá o significado de construção da linguagem em termos de objetos matemáticos.
+- objetos matemáticos (sistemas discretos)
+	- funções
+	- composição de funções
+- define um compilador de uma linguagem para objetos matemáticos.
+
+sintaxe de linguagens
+
+-> linguagem de operações sintáticas
+- notação BNF
+Ex.: 
+E -> n | E + E | E * E |(E)
+n pertencente aos naturais 
+Significa: E pode ser natural, pode ser soma de E ou multiplicação (k) de E
+
+- compila em sua (panelas fme??)
+com uma arvore sintática completa
+Ex:
+ 1+2
+ 	 E
+       / | \
+       E + E
+       |   |
+       n   n
+       1   2
+
+Essa gramática é ambiguidade. 1 + 3 * 5
+
+         E
+       / | \
+       E +  E
+       |  / | \
+       n  E * E
+       1  |   |
+          n   n
+          |   |
+          3   5
+ 
+        E
+      / | \
+     E  *  E
+    / | \   |
+    E + E   n
+    |   |   |
+    n   n   1
+    |   |
+    3   5
+Maneira simples de compilador é uma busca em profundidade na árvore sintática executando os nós.
+Veremos comutatividade e associatividade das operações.
+
+- para evitar ambiguidades,  a arvore sintática usada a prioridade e a associatividade
+das operações.
+-> soma menor prioridade
+-> multiplicação possui maior prioridade
+-> tudo associativo para à esquerda.
+
+Ex.: 
+(1+ (3*5)) + 2
+
+                 E
+               / | \
+               E +  E
+              /|\   |
+              E+E   n
+              |/|\  |
+              nE*E  2
+              || |
+              13 5
+              
+Ex.:
+1 + 3 + 5 * 6 * 7 + 2 * 2 + 3 * 4
+
+{{[(1 + 3) + ((5 * 6) * 7)] + (2 * 2)} + (3 * 4)}
+
+                                                       E
+                                      ________________/|\_____
+                                     /                 |      \  
+                                     E                 +      E
+                            ________/|\__________           / | \
+                           /         |           \          E * E
+			  E          +           E          |   |
+			/ | \                  / | \        n   n
+			E + E                  E * E        |   |
+		       /|\   \________         |   |        3   4
+		       E+ E          / | \     n   n
+		       |  |          E * E     |   |
+		       n  n	    /|\  |     2   2
+		       1  3         E*E  n
+		                    | |  |
+		                    n n  7
+		                    | |
+		                    5 6
+		                   
+		                   
+		                   
+Semantica operacional
+- define o significado de um programa mostrando como executá-lo
+- define uma máquina abstrata onde as conversões da linguagem são as operações
+e a semântica mostra o efeito de executar essas intruções na máquina abstrata.
+
+- Outra definição: a semântica operacional define um sistema de transição de estados
+- cada instrução da linguagem faz uma transição no estado do sistema
+- uma transição leva o sistema de uma configuração para uma nova configuração.
+
+
+Existem dois tipos de semântica operacional:
+- Semântica big-step (semântica natural)
+	 - programas são avaliados em um grande passo (uma grande transição)
+	 
+- semântica small-step (semântica estrutural)
+	 - programas são avaliados em vários pequenos passos até chegarem em seu estado final.
+	 
+
+SEMÂNTICA OPERACIONAL BIG-STEP:
+- define uma função que avalia programas (introdutória)
+- usamos regras parecidas com as regras de dedução natural da lógica proposicional.
+
+Ex.: 
+premissas            P1 P2 P3 ... PN
+                     _______________
+                     
+                           C
+                           	
+- caso as premissas P1 até Pn sejam verdades, posso concluir C.
+
+Notação:
+
+- usamos o símbolo ü
+ ||
+ \/
+para representar a função semântica
+- Expressões semânticas
+ || : E -> N
+ \/
+ 
+ - A função semântica ü das expressões aritméticas recebe como entrada uma expressão 
+ E e envolve na saída um valor n pertencente aos naturais.
+ 
+ - usamos a notação 
+ E || n
+   \/
+ 
+ para dizer que a função ü recebe como entrada uma 
+ expressão e devolve como saída um número n.
+ 
+ 	!Semântica operacional big-step da linguagem de expressões aritméticas.!
+ 
+ Sintaxe:
+ E -> n | E + E | E * E
+ n pertencente aos naturais
+ 
+ Semântica:
+ - pelo menos uma regra para cada categoria sintática.
+ 1a regra:
+ 
+ __________ num      é um axioma, n tem nenhuma premissa.
+  n ||  n
+    \/	
+  
+  
+  E1  || n1    E2  || n2           
+      \/           \/
+ __________________________  n = n1 + n2
+  E1 + E2 ||  n 
+          \/
+        
+   
+        
+  E1  || n1    E2  || n2           
+      \/           \/
+ __________________________  n = n1 * n2
+  E1 * E2 ||  n 
+          \/
+ 
+ 
+ 
+		       
